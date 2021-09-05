@@ -6,6 +6,8 @@ Getting started
  5) run `php artisan migrate`
  6) run `php artisan db:seed` to seed data
  7) run `php artisan serve`
+
+
  CAR Endpoints
  
  GET
