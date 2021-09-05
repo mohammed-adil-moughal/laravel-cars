@@ -18,7 +18,8 @@ Getting started
 
  GET FILTERS
  `http://127.0.0.1:8000/api/cars?brand=teal` `http://127.0.0.1:8000/api/cars?color=teal`   
- ![image](https://user-images.githubusercontent.com/10894677/132135264-3bd0987d-1498-4ef0-8c24-8f7927c17fe9.png)
+![image](https://user-images.githubusercontent.com/10894677/132135667-68fed88d-4984-49a2-8e58-d00189262510.png)
+![image](https://user-images.githubusercontent.com/10894677/132135736-22f67709-ced1-4355-8362-b0bd99fb0e7a.png)
 
  POST 
 `http://127.0.0.1:8000/api/cars`
