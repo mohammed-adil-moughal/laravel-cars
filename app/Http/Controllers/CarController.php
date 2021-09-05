@@ -27,6 +27,7 @@ class CarController extends Controller
     {
 
         $cars = Car::filter($filters)->get();
+
         return CarResource::collection($cars);
     }
 
