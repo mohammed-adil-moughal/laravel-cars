@@ -12,7 +12,7 @@ class CarBrandController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class CarBrandController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CarBrandRequest $request
-     * @return \Illuminate\Http\Response
+     * @return CarBrandResource
      */
     public function store(CarBrandRequest $request)
     {
@@ -42,7 +42,7 @@ class CarBrandController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return CarBrandResource
      */
     public function show($id)
     {
@@ -60,7 +60,7 @@ class CarBrandController extends Controller
      *
      * @param CarBrandUpdateRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return CarBrandResource
      */
     public function update(CarBrandUpdateRequest $request, $id)
     {
@@ -68,7 +68,7 @@ class CarBrandController extends Controller
         $data = $request->validated();
         try {
             $carBrand = CarBrand::findOrFail($id);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             abort(404, 'Not found');
         }
 
@@ -82,13 +82,13 @@ class CarBrandController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return bool[]
      */
     public function destroy($id)
     {
         try {
             $carBrand = CarBrand::findOrFail($id);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             abort(404, 'Not found');
         }
 

@@ -23,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/cars', CarController::class);
 
 Route::apiResource('/car-brands', CarBrandController::class);
+Route::post('/car-image', [CarController::class, 'uploadCarImage']);

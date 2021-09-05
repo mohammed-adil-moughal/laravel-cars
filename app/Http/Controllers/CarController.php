@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\CarFilters;
 use App\Http\Requests\Car\CarCreateRequest;
+use App\Http\Requests\Car\CarImageRequest;
 use App\Http\Requests\Car\CarUpdateRequest;
+use App\Http\Resources\CarImageResource;
 use App\Http\Resources\CarResource;
+use App\Jobs\UploadCarImage;
 use App\Models\Car;
 use App\Models\CarBrand;
+use App\Models\CarImage;
 use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\throwException;
@@ -17,7 +21,7 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(CarFilters $filters)
     {
@@ -30,8 +34,8 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CarCreateRequest $request
+     * @return CarResource
      */
     public function store(CarCreateRequest $request)
     {
@@ -64,13 +68,13 @@ class CarController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return CarResource
      */
     public function show($id)
     {
         $car = Car::find($id);
         if (!$car) {
-            return [];
+            abort(404, 'Not found');
         }
 
         return new CarResource($car);
@@ -79,9 +83,9 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CarUpdateRequest $request
+     * @param int $id
+     * @return CarResource
      */
     public function update(CarUpdateRequest $request, $id)
     {
@@ -96,7 +100,7 @@ class CarController extends Controller
 
         if (isset($data['brand'])) {
             try {
-                $carBrand = CarBrand::findOrFail($data['brand']);
+                CarBrand::findOrFail($data['brand']);
             } catch (\Exception $e) {
                 abort(404, 'Brand Not found');
             }
@@ -116,7 +120,7 @@ class CarController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return bool[]
      */
     public function destroy($id)
     {
@@ -128,5 +132,32 @@ class CarController extends Controller
 
         $car->delete();
         return ['deleted' => true];
+    }
+
+
+    /**
+     * @param CarImageRequest $request
+     * @return string[]
+     */
+    public function uploadCarImage(CarImageRequest $request) {
+        $data = $request->validated();
+
+        try {
+           Car::findOrFail($data['car']);
+        } catch (\Throwable $e) {
+            abort(404, 'Car Not found');
+        }
+
+        UploadCarImage::dispatch(
+            [
+                 'description' => $data['description'],
+                 'car_id' => $data['car'],
+                 'file' => $request->file->getRealPath(),
+                 'fileName' => $request->file->getFilename(),
+                 'fileExtension' => $request->file->extension()
+            ]
+        );
+
+       return ['success' => true];
     }
 }

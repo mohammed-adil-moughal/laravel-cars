@@ -5,9 +5,10 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CarResource extends JsonResource
+class CarImageResource extends JsonResource
 {
     use DelegatesToResource;
+
     /**
      * Transform the resource into an array.
      *
@@ -16,13 +17,10 @@ class CarResource extends JsonResource
      */
     public function toArray($request)
     {
-        $carImageRecourse = new CarImageResource($request);
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'color' => $this->color,
-            'brand' => new CarBrandResource($this->carbrand),
-            'image' => $carImageRecourse::collection($this->carImage)
+            'file_key'=> $this->file_key,
+            'description'=> $this->description
         ];
     }
 }

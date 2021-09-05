@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property CarBrand $carBrand
+ * @method static filter(\App\Http\Filters\CarFilters $filters)
  */
 class Car extends Model
 {
@@ -36,6 +37,14 @@ class Car extends Model
     public function carBrand()
     {
         return $this->belongsTo('App\Models\CarBrand', 'brand_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function carImage()
+    {
+        return $this->hasMany('App\Models\CarImage', 'car_id');
     }
 
     public function scopeFilter($builder, QueryFilter $filter){

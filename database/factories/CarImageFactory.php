@@ -3,18 +3,17 @@
 namespace Database\Factories;
 
 use App\Models\Car;
-use App\Models\CarBrand;
 use App\Models\CarImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CarFactory extends Factory
+class CarImageFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Car::class;
+    protected $model = CarImage::class;
 
     /**
      * Define the model's default state.
@@ -24,9 +23,9 @@ class CarFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->firstName.$this->faker->colorName,
-            'color' => $this->faker->colorName,
-            'brand_id' => CarBrand::factory(),
+            'car_id' => Car::factory(),
+            'description' => $this->faker->sentence,
+            'file_key' => $this->faker->filePath()
         ];
     }
 }
