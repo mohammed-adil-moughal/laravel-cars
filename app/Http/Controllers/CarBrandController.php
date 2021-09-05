@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarBrand\CarBrandRequest;
+use App\Http\Requests\CarBrand\CarBrandUpdateRequest;
 use App\Http\Resources\CarBrandResource;
 use App\Models\CarBrand;
-use Illuminate\Http\Request;
 
 class CarBrandController extends Controller
 {
@@ -20,24 +21,21 @@ class CarBrandController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param CarBrandRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CarBrandRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $carBrand = new CarBrand();
+        $carBrand->name = $data['name'];
+        $carBrand->description= $data['description'];
+        $carBrand->save();
+
+        return new CarBrandResource($carBrand);
     }
 
     /**
@@ -51,32 +49,33 @@ class CarBrandController extends Controller
         $carBrand = CarBrand::find($id);
 
         if(!$carBrand) {
-            return [];
+            abort('404', 'Not found');
         }
         return new CarBrandResource($carBrand);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param CarBrandUpdateRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CarBrandUpdateRequest $request, $id)
     {
         //
+        $data = $request->validated();
+        try {
+            $carBrand = CarBrand::findOrFail($id);
+        } catch (\Throwable $e) {
+            abort(404, 'Not found');
+        }
+
+        $carBrand->description= $data['description'];
+        $carBrand->save();
+
+        return new CarBrandResource($carBrand);
     }
 
     /**
@@ -87,6 +86,13 @@ class CarBrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $carBrand = CarBrand::findOrFail($id);
+        } catch (\Throwable $e) {
+            abort(404, 'Not found');
+        }
+
+        $carBrand->delete();
+        return ['deleted' => true];
     }
 }

@@ -23,4 +23,5 @@ class CarBrandResource extends JsonResource
             'description'=> $this->description
         ];
     }
+
 }

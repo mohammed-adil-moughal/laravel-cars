@@ -22,8 +22,4 @@ class CarResource extends JsonResource
             'brand' => new CarBrandResource($this->carbrand),
         ];
     }
-
-    public function with($request) {
-        return ['success' => true];
-    }
 }

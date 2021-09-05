@@ -15,8 +15,8 @@ class CreateCarsTable extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('brand_id')->constrained('car_brands');
+            $table->string('name')->unique();
+            $table->foreignId('brand_id')->constrained('car_brands')->onDelete('cascade');
             $table->timestamps();
         });
     }
