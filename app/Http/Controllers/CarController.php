@@ -21,7 +21,6 @@ class CarController extends Controller
      */
     public function index(CarFilters $filters)
     {
-       // $cars = Car::all();
 
         $cars = Car::filter($filters)->get();
         return CarResource::collection($cars);
