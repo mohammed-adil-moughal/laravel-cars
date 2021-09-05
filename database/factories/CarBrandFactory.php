@@ -22,7 +22,7 @@ class CarBrandFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->colorName,
+            'name' => $this->faker->safeColorName,
             'description' => $this->faker->sentence,
         ];
     }

@@ -14,7 +14,8 @@ class CarUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand' => 'required|integer',
+            'brand' => 'integer',
+            'color' => 'string'
         ];
     }
 }

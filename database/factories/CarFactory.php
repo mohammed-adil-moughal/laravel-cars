@@ -24,6 +24,7 @@ class CarFactory extends Factory
     {
         return [
             'name' => $this->faker->firstName,
+            'color' => $this->faker->colorName,
             'brand_id' => CarBrand::factory(),
         ];
     }

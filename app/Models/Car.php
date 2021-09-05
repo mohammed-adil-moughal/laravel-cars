@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,7 @@ class Car extends Model
     /**
      * @var array
      */
-    protected $fillable = ['brand_id', 'name', 'created_at', 'updated_at'];
+    protected $fillable = ['brand_id', 'name', 'color', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,4 +37,9 @@ class Car extends Model
     {
         return $this->belongsTo('App\Models\CarBrand', 'brand_id');
     }
+
+    public function scopeFilter($builder, QueryFilter $filter){
+        return $filter->apply($builder);
+    }
+
 }

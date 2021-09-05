@@ -16,7 +16,8 @@ class CarCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'brand' => 'required|integer'
+            'brand' => 'required|integer',
+            'color' => 'required|string'
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\CarFilters;
 use App\Http\Requests\Car\CarCreateRequest;
 use App\Http\Requests\Car\CarUpdateRequest;
 use App\Http\Resources\CarResource;
@@ -18,9 +19,12 @@ class CarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CarFilters $filters)
     {
-        return CarResource::collection(Car::all());
+       // $cars = Car::all();
+
+        $cars = Car::filter($filters)->get();
+        return CarResource::collection($cars);
     }
 
 
@@ -47,7 +51,7 @@ class CarController extends Controller
         $car = new Car();
         $car->name = $data['name'];
         $car->brand_id = $data['brand'];
-
+        $car->color = $data['color'];
         try {
             $car->save();
         } catch (\Exception $e){
@@ -90,13 +94,20 @@ class CarController extends Controller
             abort(404, 'Not found');
         }
 
-        try {
-            $carBrand = CarBrand::findOrFail($data['brand']);
-        } catch (\Exception $e) {
-            abort(404, 'Brand Not found');
+
+        if (isset($data['brand'])) {
+            try {
+                $carBrand = CarBrand::findOrFail($data['brand']);
+            } catch (\Exception $e) {
+                abort(404, 'Brand Not found');
+            }
+            $car->brand_id = $data['brand'];
         }
 
-        $car->brand_id = $data['brand'];
+        if(isset($data['color'])) {
+            $car->color = $data['color'];
+        }
+
         $car->save();
 
         return new CarResource($car);
