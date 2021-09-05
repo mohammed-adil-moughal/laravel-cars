@@ -9,7 +9,10 @@ Getting started
  CAR Endpoints
  
  GET
- `http://127.0.0.1:8000/api/cars` `http://127.0.0.1:8000/api/cars/1` `http://127.0.0.1:8000/api/cars?brand=teal`  
+ `http://127.0.0.1:8000/api/cars` `http://127.0.0.1:8000/api/cars/1` 
+ 
+ GET FILTERS
+ `http://127.0.0.1:8000/api/cars?brand=teal` `http://127.0.0.1:8000/api/cars?color=teal`   
  
  POST 
 `http://127.0.0.1:8000/api/cars`
